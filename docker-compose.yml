@@ -1,0 +1,25 @@
+version: "3.0"
+services:
+  app:
+    image: ${REGISTRY_URL:-jleaf.org:5011}/kbbackend:${APP_VERSION:-v1.0.0}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: "no"
+    tty: true
+    ports: 
+      - "${APP_PORT:-5005}:5005"
+    volumes:
+      - "./log:/app/log"
+    environment: 
+      DB_HOST: ${DB_HOST:-172.17.0.1}
+      DB_PORT: ${DB_PORT:-5432}
+      DB_NAME: ${DB_NAME:-erp_cloud}
+      DB_USER: ${DB_USER:-sts}
+      DB_PASSWORD: ${DB_PASSWORD:-Awesome123!}
+      LOG_FILE: ${LOG_FILE:-/dev/null}
+      LOG_LEVEL: ${LOG_LEVEL:-debug}
+      TZ: ${TIMEZONE:-Asia/Jakarta}
+      DB_POOL_MAX_CONNS: ${DB_POOL_MAX_CONNS:-5}
+      DB_APP_NAME: ${DB_APP_NAME:-kbbackend}
+      
