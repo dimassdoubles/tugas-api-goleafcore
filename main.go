@@ -13,18 +13,13 @@ func main() {
 	}, glinit.DbConfig{
 		Host:            glutil.GetEnv(glinit.ENV_DB_HOST, "172.17.0.1"),
 		Port:            glutil.GetEnvInt(glinit.ENV_DB_PORT, 5432),
-		Name:            glutil.GetEnv(glinit.ENV_DB_NAME, "erp"),
+		Name:            glutil.GetEnv(glinit.ENV_DB_NAME, "myappdb"),
 		User:            glutil.GetEnv(glinit.ENV_DB_USER, "sts"),
 		Password:        glutil.GetEnv(glinit.ENV_DB_PASSWORD, "Awesome123!"),
 		ApplicationName: "AppTemplateBackend",
 	}, glinit.ServerConfig{
 		Port: glutil.GetEnvInt(glinit.ENV_SERVER_PORT, glinit.DEFAULT_PORT),
 	})
-
-	// glinit.InitLog()
-	// app := glinit.InitServer(glinit.ServerConfig{
-	// 	Port: 8000,
-	// })
 
 	config.ConfigureFiber(app)
 

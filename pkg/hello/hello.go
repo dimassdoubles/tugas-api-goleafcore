@@ -3,7 +3,7 @@ package hello
 import (
 	"fmt"
 
-	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/hello/controller"
+	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/hello/controller/dbno"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
 	"github.com/gofiber/fiber/v2"
@@ -23,10 +23,9 @@ func Setup(app *fiber.App, config Config) error {
 	config = buildDefaultConfig(config)
 	logrus.Debug("Setup module hello with config : ", config)
 
-	group := app.Group(config.ApiPrefix+"/hello", config.Middleware)
-
-	group.Get("/get/:word", controller.HelloGet)
-	group.Post("/post", controller.HelloPost)
+	groupDbNo := app.Group(config.ApiPrefix+"/v1/hello/nodb", config.Middleware)
+	groupDbNo.Get("/get-list/:count", dbno.GetHelloList)
+	groupDbNo.Post("/add", dbno.AddHello)
 
 	return nil
 }
