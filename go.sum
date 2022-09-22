@@ -1,5 +1,13 @@
 git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220901014644-83f6fc078c4d h1:pKfZGYH/+CZfwpxFRIlgQDG2PqRj+1pFvFBElrGyN1Q=
 git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220901014644-83f6fc078c4d/go.mod h1:G+0flVQfmSajyI3GtwIsr6m12f8Ye0lzJwgWyQXnAAA=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220919080326-da93c294dd97 h1:/GokqDi/OLl+RWgz7UFMFeiWr1vN9/LLwxw/mq/diLs=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220919080326-da93c294dd97/go.mod h1:G+0flVQfmSajyI3GtwIsr6m12f8Ye0lzJwgWyQXnAAA=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220921134210-6081bb5bf900 h1:s/u2cf9Dde8PLj63FYqbdb7lyYeU5JDOBPiVMaqbdKo=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220921134210-6081bb5bf900/go.mod h1:G+0flVQfmSajyI3GtwIsr6m12f8Ye0lzJwgWyQXnAAA=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220922133319-273bc53ba6d2 h1:1o7a5LqPhf5m2AAIWB++mArZj0V5TIZybRqmK/A9yxo=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220922133319-273bc53ba6d2/go.mod h1:G+0flVQfmSajyI3GtwIsr6m12f8Ye0lzJwgWyQXnAAA=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220922134625-e7fbc977008b h1:da1o8sk4fqdEuVfReDL3ciW4rCEYjFhjgFPERkyzYAs=
+git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220922134625-e7fbc977008b/go.mod h1:G+0flVQfmSajyI3GtwIsr6m12f8Ye0lzJwgWyQXnAAA=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/Masterminds/semver/v3 v3.1.1/go.mod h1:VPu/7SZ7ePZ3QOrcuXROw5FAcLl4a0cBrbBpGY/8hQs=
 github.com/andybalholm/brotli v1.0.4 h1:V7DdXeJtZscaqfNuAdSRuRFzuiKlHSC/Zh3zl9qY3JY=

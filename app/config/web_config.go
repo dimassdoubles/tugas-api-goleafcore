@@ -18,5 +18,6 @@ func ConfigureFiber(app *fiber.App) {
 		// Middleware: accessMd,
 	})
 
-	// another module
+	// call Setup other modules
+	//
 }

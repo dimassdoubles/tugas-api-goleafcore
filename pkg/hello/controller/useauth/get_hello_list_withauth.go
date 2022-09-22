@@ -1,4 +1,4 @@
-package dbyes
+package useauth
 
 import (
 	"context"
@@ -12,6 +12,12 @@ import (
 
 type OutGetHelloList struct {
 	HelloList []*Hello `json:"helloList"`
+}
+
+type Hello struct {
+	Id   int64  `json:"id" example:"10"`
+	Code string `json:"code" example:"H001"`
+	Name string `json:"name" example:"Hellow"`
 }
 
 func GetHelloList(fc *fiber.Ctx) error {

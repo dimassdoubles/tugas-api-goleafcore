@@ -6,7 +6,7 @@ import (
 )
 
 type ParamGetHello struct {
-	Count int64 `json:"count" example:"5" validate:"required min=2"`
+	Count int64 `json:"count" example:"5" validate:"min=2"`
 }
 
 type OutGetHelloList struct {
@@ -24,11 +24,16 @@ func GetHelloList(fc *fiber.Ctx) error {
 		return err
 	}
 
-	out := OutGetHelloList{
-		HelloList: make([]*Hello, param.Count),
+	helloList := make([]*Hello, 0)
+
+	for i := 0; i < int(param.Count); i++ {
+		helloList = append(helloList, &Hello{
+			Word: "Hello world without database",
+		})
 	}
-	for _, hello := range out.HelloList {
-		hello.Word = "Hello world no db"
+
+	out := OutGetHelloList{
+		HelloList: helloList,
 	}
 
 	return glapi.Ok(fc, out)
