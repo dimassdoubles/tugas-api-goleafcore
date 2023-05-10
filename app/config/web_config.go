@@ -2,6 +2,7 @@ package config
 
 import (
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/hello"
+	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
 	"github.com/gofiber/fiber/v2"
 )
@@ -16,6 +17,10 @@ func ConfigureFiber(app *fiber.App) {
 		ApiPrefix: glapi.API_PREFIX_DEFAULT,
 		// TODO jika mau menggunakan security api
 		// Middleware: accessMd,
+	})
+
+	learngo.Setup(app, learngo.Config{
+		ApiPrefix: glapi.API_PREFIX_DEFAULT,
 	})
 
 	// call Setup other modules
