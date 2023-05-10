@@ -3,7 +3,7 @@ module git.solusiteknologi.co.id/goleaf/apptemplate
 go 1.18
 
 //git.solusiteknologi.co.id/goleaf/glauth v0.0.0-20220805013851-e6e8037f28f5
-require git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20220922134625-e7fbc977008b
+require git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20230425073320-065c4199b183
 
 require (
 	github.com/georgysavva/scany v1.1.0 // indirect
@@ -12,6 +12,7 @@ require (
 	github.com/go-playground/validator/v10 v10.11.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mattn/go-nulltype v0.0.0-20200221160555-75ae8a76f2e9 // indirect
+	github.com/mcuadros/go-defaults v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 )
 
