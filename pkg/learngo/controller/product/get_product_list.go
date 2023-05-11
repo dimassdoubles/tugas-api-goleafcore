@@ -22,8 +22,9 @@ type ParamGetProduct struct {
 func GetProductList(fc *fiber.Ctx) error {
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		param := ParamGetProduct{}
+		query := gldata.QueryStdGetList{}
 
-		err := glapi.FetchValidParams(fc, &param)
+		err := glapi.FetchValidAll(fc, &param, &query)
 		if err != nil {
 			return err
 		}
@@ -35,6 +36,8 @@ func GetProductList(fc *fiber.Ctx) error {
 		err = gldb.SelectQMt(mt, *gldb.NewQBuilder().
 			Add(" SELECT * ").
 			Add(" FROM ", tables.PRODUCT, " ").
+			Add(" WHERE true ").
+			AddILike(" AND ", "keyword", query.Keyword, "product_code", "product_name").
 			Add(" LIMIT :limit OFFSET :offset ").
 			SetParam("limit", param.Limit).
 			SetParam("offset", param.Offset),
