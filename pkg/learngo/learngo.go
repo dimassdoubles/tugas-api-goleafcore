@@ -29,6 +29,7 @@ func Setup(app *fiber.App, config Config) error {
 	groupProduct.Get("/get-list/:limit/:offset", product.GetProductList)
 	groupProduct.Post("/add", product.AddProduct)
 	groupProduct.Post("/edit", product.EditProduct)
+	groupProduct.Delete("/remove", product.RemoveProduct)
 
 	// penjualan
 	groupPenjualan := app.Group(config.ApiPrefix+"/v1/learngo/penjualan", config.Middleware)

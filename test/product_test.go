@@ -54,6 +54,16 @@ func TestProductApi(t *testing.T) {
 		gltest.FetchRespBody(t, responseEdit, &out)
 		log.Println("Output edit: ", out.PrettyString())
 
+		// REMOVE
+		responseRemove := gltest.TestDelete(t, app, "/api/v1/learngo/product/remove", product.BodyRemoveProduct{
+			ProductId: 1,
+		})
+
+		assert.AssertEquals(http.StatusOK, responseRemove.StatusCode, "Harusnya oke")
+
+		gltest.FetchRespBody(t, responseRemove, &out)
+		log.Println("Output remove: ", out.PrettyString())
+
 		return nil
 	})
 }
