@@ -6,10 +6,12 @@ import (
 	"testing"
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo"
+	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/penjualan"
 	"git.solusiteknologi.co.id/goleaf/goleafcore"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gltest"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v4"
+	"github.com/shopspring/decimal"
 )
 
 func TestPenjualan(t *testing.T) {
@@ -27,6 +29,29 @@ func TestPenjualan(t *testing.T) {
 		var out goleafcore.Dto
 		gltest.FetchRespBody(t, response, &out)
 		log.Println("Output get list: ", out.PrettyString())
+
+		// ADD
+		itemList := []*penjualan.ItemPenjualan{
+			&penjualan.ItemPenjualan{
+				ProductId: 1,
+				Qty:       decimal.NewFromInt(5),
+				Price:     decimal.NewFromInt(3000),
+			},
+			&penjualan.ItemPenjualan{
+				ProductId: 2,
+				Qty:       decimal.NewFromInt(2),
+				Price:     decimal.NewFromInt(3000),
+			},
+		}
+		responseAdd := gltest.TestPost(t, app, "/api/v1/learngo/penjualan/add", penjualan.BodyAddPenjualan{
+			TotalPembayaran: decimal.NewFromInt(50000),
+			TotalKembalian:  decimal.NewFromInt(20000),
+			ItemList:        itemList,
+		})
+		assert.AssertEquals(http.StatusOK, responseAdd.StatusCode, "Harusnya oke")
+
+		gltest.FetchRespBody(t, responseAdd, &out)
+		log.Println("Output add: ", out.PrettyString())
 
 		return nil
 	})
