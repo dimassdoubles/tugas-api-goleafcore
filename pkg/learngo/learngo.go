@@ -3,8 +3,8 @@ package learngo
 import (
 	"fmt"
 
-	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/product"
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/penjualan"
+	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/product"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
 	"github.com/gofiber/fiber/v2"
@@ -28,6 +28,7 @@ func Setup(app *fiber.App, config Config) error {
 	groupProduct := app.Group(config.ApiPrefix+"/v1/learngo/product", config.Middleware)
 	groupProduct.Get("/get-list/:limit/:offset", product.GetProductList)
 	groupProduct.Post("/add", product.AddProduct)
+	groupProduct.Post("/edit", product.EditProduct)
 
 	// penjualan
 	groupPenjualan := app.Group(config.ApiPrefix+"/v1/learngo/penjualan", config.Middleware)

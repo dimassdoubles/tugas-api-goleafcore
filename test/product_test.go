@@ -41,6 +41,19 @@ func TestProductApi(t *testing.T) {
 		gltest.FetchRespBody(t, responseAdd, &out)
 		log.Println("Output add: ", out.PrettyString())
 
+		// EDIT
+		responseEdit := gltest.TestPost(t, app, "/api/v1/learngo/product/edit", product.BodyEditProduct{
+			ProductId:   1,
+			ProductName: "Product Update",
+			Price:       decimal.NewFromInt(3000),
+			Version:     0,
+		})
+
+		assert.AssertEquals(http.StatusOK, responseEdit.StatusCode, "Harusnya oke")
+
+		gltest.FetchRespBody(t, responseEdit, &out)
+		log.Println("Output edit: ", out.PrettyString())
+
 		return nil
 	})
 }
