@@ -16,7 +16,7 @@ import (
 
 type BodyAddPenjualan struct {
 	TotalPembayaran decimal.Decimal  `json:"totalPembayaran"  example:"20000"`
-	TotalKembalian  decimal.Decimal  `json:"totalKembalian" example:"30000`
+	TotalKembalian  decimal.Decimal  `json:"totalKembalian" example:"30000"`
 	ItemList        []*ItemPenjualan `json:"itemList" example:"[{\"productId\": 10, \"qty\": \"5\", \"price\": \"10000\"}, {\"productId\": 20, \"qty\": \"3\", \"price\": \"15000\"}]"`
 }
 
