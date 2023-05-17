@@ -3,7 +3,6 @@ package penjualan
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/tables"
@@ -23,7 +22,7 @@ type BodyAddPenjualan struct {
 
 type ItemPenjualan struct {
 	ProductId int64           `json:"productId" example:"10"`
-	Qty       decimal.Decimal `json:"qty" example:"5"`
+	Qty       decimal.Decimal `json:"qty" validate:"gt=0" example:"5"`
 	Price     decimal.Decimal `json:"price" example:"10000"`
 }
 
@@ -51,8 +50,6 @@ func AddPenjualan(fc *fiber.Ctx) error {
 			totalPenjualan = totalPenjualan.Add(penjualanItem.Price.Mul(penjualanItem.Qty))
 		}
 
-		log.Println("Total Penjualan: ", totalPenjualan)
-
 		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
 			Add(" INSERT INTO ", tables.PENJUALAN, " ").
 			Add(" (total_penjualan, total_pembayaran, total_kembalian, tanggal, version) ").
@@ -75,8 +72,6 @@ func AddPenjualan(fc *fiber.Ctx) error {
 		}
 
 		valuesInsert = strings.TrimRight(valuesInsert, ",") + ";"
-
-		log.Println("values insert %s", valuesInsert)
 
 		err = gldb.ExecQMt(mt, *gldb.NewQBuilder().
 			Add(" INSERT INTO ", tables.PENJUALAN_ITEM, " ").
