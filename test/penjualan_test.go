@@ -9,6 +9,7 @@ import (
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/penjualan"
 	"git.solusiteknologi.co.id/goleaf/goleafcore"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gltest"
+	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v4"
 	"github.com/shopspring/decimal"
@@ -23,7 +24,7 @@ func TestPenjualan(t *testing.T) {
 	}, func(assert *gltest.Assert, app *fiber.App, tx pgx.Tx, i int) interface{} {
 
 		// GET LIST
-		response := gltest.TestGet(t, app, "/api/v1/learngo/penjualan/get-list/10/0?dateFrom=20230508&dateTo=20230511")
+		response := gltest.TestGet(t, app, "/api/v1/learngo/penjualan/get-list/10/0?dateFrom=20230101&dateTo="+glutil.DateNow())
 		assert.AssertEquals(http.StatusOK, response.StatusCode, "Harusnya oke")
 
 		var out goleafcore.Dto

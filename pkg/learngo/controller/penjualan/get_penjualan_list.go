@@ -55,8 +55,8 @@ func GetPenjualanList(fc *fiber.Ctx) error {
 			Add(" FROM ").
 			Add(tables.PENJUALAN, " A ").
 			Add(" where ").
-			Add(" LEFT(A.create_datetime, 8) >= :dateFrom ").
-			Add(" and LEFT(A.create_datetime, 8)  <= :dateTo ").
+			Add(" A.tanggal >= :dateFrom AND").
+			Add(" A.tanggal  <= :dateTo ").
 			Add(" LIMIT :limit OFFSET :offset ").
 			SetParam("dateFrom", query.DateFrom).
 			SetParam("dateTo", query.DateTo).

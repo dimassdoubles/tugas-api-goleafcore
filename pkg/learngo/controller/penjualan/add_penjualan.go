@@ -10,6 +10,7 @@ import (
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gldata"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gldb"
+	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
 	"github.com/gofiber/fiber/v2"
 	"github.com/shopspring/decimal"
 )
@@ -54,13 +55,14 @@ func AddPenjualan(fc *fiber.Ctx) error {
 
 		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
 			Add(" INSERT INTO ", tables.PENJUALAN, " ").
-			Add(" (total_penjualan, total_pembayaran, total_kembalian, version) ").
+			Add(" (total_penjualan, total_pembayaran, total_kembalian, tanggal, version) ").
 			Add(" VALUES ").
-			Add(" (:totalPenjualan, :totalPembayaran, :totalKembalian, :version) ").
+			Add(" (:totalPenjualan, :totalPembayaran, :totalKembalian, :tanggal, :version) ").
 			Add(" RETURNING penjualan_id, total_penjualan, total_pembayaran, total_kembalian, version ").
 			SetParam("totalPenjualan", totalPenjualan).
 			SetParam("totalPembayaran", body.TotalPembayaran).
 			SetParam("totalKembalian", body.TotalKembalian).
+			SetParam("tanggal", glutil.DateNow()).
 			SetParam("version", 0),
 			&out)
 		if err != nil {
