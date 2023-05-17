@@ -16,11 +16,11 @@ type OutGetPenjualanList struct {
 }
 
 type Penjualan struct {
-	PenjualanId     int64           `json:"penjualanId" example="10"`
-	TotalPenjualan  decimal.Decimal `json:"totalPenjualan" example="120000"`
-	TotalPembayaran decimal.Decimal `json:"totalPembayaran" example="150000"`
-	TotalKembalian  decimal.Decimal `json:"totalKembalian" example="30000"`
-	Version         int64           `json:"version" example="0"`
+	PenjualanId     int64           `json:"penjualanId" example:"10"`
+	TotalPenjualan  decimal.Decimal `json:"totalPenjualan" example:"120000"`
+	TotalPembayaran decimal.Decimal `json:"totalPembayaran" example:"150000"`
+	TotalKembalian  decimal.Decimal `json:"totalKembalian" example:"30000"`
+	Version         int64           `json:"version" example:"0"`
 	ItemCount       int64           `json:"itemCount" example:"13"`
 }
 
