@@ -33,12 +33,12 @@ func TestPenjualan(t *testing.T) {
 
 		// ADD
 		itemList := []*penjualan.ItemPenjualan{
-			&penjualan.ItemPenjualan{
+			{
 				ProductId: 1,
 				Qty:       decimal.NewFromInt(5),
 				Price:     decimal.NewFromInt(3000),
 			},
-			&penjualan.ItemPenjualan{
+			{
 				ProductId: 2,
 				Qty:       decimal.NewFromInt(2),
 				Price:     decimal.NewFromInt(3000),
