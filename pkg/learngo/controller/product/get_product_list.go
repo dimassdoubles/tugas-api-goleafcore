@@ -19,6 +19,18 @@ type ParamGetProduct struct {
 	Offset int64 `json:"page" example:"0" validate:"min=0"`
 }
 
+// GetProductList godoc
+// @Router      /v1/learngo/product/get-list/:limit/:offset [get]
+// @Summary     Mendapatkan list produk
+// @Description Tidak ada
+// @Tags        Learngo / Product
+// @Accept      */*
+// @Produce     json
+// @Param       limit path int false "contoh: 10"
+// @Param       offset path int false "contoh: 05"
+// @Param       keyword query string false "contoh: hai"
+// @Success     200      {object} OutGetProductList "Sample response"
+// @Failure     500      {object} glapi.ResultFail "errorCode = unexpected.error"
 func GetProductList(fc *fiber.Ctx) error {
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		param := ParamGetProduct{}

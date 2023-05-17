@@ -24,6 +24,16 @@ type OutRemoveProduct struct {
 	Version     int64           `json:"version" exapmle:"0"`
 }
 
+// RemoveProduct godoc
+// @Router      /v1/learngo/product/remove [delete]
+// @Summary     Menghapus produk berdasarkan id
+// @Description Id produk harus terdaftar
+// @Tags        Learngo / Product
+// @Accept      */*
+// @Produce     json
+// @Param       body body BodyRemoveProduct true "Sample JSON format"
+// @Success     200      {object} OutRemoveProduct "Sample response"
+// @Failure     500      {object} glapi.ResultFail500 "Unexpected Error. errorCode = unexpected.error, errorArgs: [message1,message2,...]"
 func RemoveProduct(fc *fiber.Ctx) error {
 	// validasi
 	// - productId harus valid

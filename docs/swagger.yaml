@@ -1,0 +1,415 @@
+basePath: /api/
+definitions:
+  glapi.ResultFail:
+    properties:
+      errorArgs:
+        example:
+        - Apple
+        - "-9000"
+        items:
+          type: string
+        type: array
+      errorCode:
+        example: price.amount.not.valid
+        type: string
+    type: object
+  glapi.ResultFail500:
+    properties:
+      errorArgs:
+        example:
+        - query error before ...
+        items:
+          type: string
+        type: array
+      errorCode:
+        example: unexpected.error
+        type: string
+    type: object
+  penjualan.BodyAddPenjualan:
+    properties:
+      itemList:
+        items:
+          $ref: '#/definitions/penjualan.ItemPenjualan'
+        type: array
+      totalKembalian:
+        example: 30000
+        type: number
+      totalPembayaran:
+        example: 20000
+        type: number
+    type: object
+  penjualan.ItemPenjualan:
+    properties:
+      price:
+        example: 10000
+        type: number
+      productId:
+        example: 10
+        type: integer
+      qty:
+        example: 5
+        type: number
+    type: object
+  penjualan.OutAddPenjualan:
+    properties:
+      penjualanId:
+        example: 10
+        type: integer
+      totalKembalian:
+        example: 30000
+        type: number
+      totalPembayaran:
+        example: 50000
+        type: number
+      totalPenjualan:
+        example: 20000
+        type: number
+      version:
+        type: integer
+    type: object
+  penjualan.OutGetPenjualanList:
+    properties:
+      productList:
+        items:
+          $ref: '#/definitions/penjualan.Penjualan'
+        type: array
+    type: object
+  penjualan.Penjualan:
+    properties:
+      itemCount:
+        example: 13
+        type: integer
+      penjualanId:
+        example: 10
+        type: integer
+      totalKembalian:
+        example: 30000
+        type: number
+      totalPembayaran:
+        example: 150000
+        type: number
+      totalPenjualan:
+        example: 120000
+        type: number
+      version:
+        example: 0
+        type: integer
+    type: object
+  product.BodyAddProduct:
+    properties:
+      price:
+        example: 5000
+        type: number
+      productCode:
+        example: P001
+        type: string
+      productName:
+        example: Indomie Rendang
+        type: string
+    required:
+    - productCode
+    - productName
+    type: object
+  product.BodyEditProduct:
+    properties:
+      price:
+        example: 5000
+        type: number
+      productId:
+        example: 10
+        type: integer
+      productName:
+        example: Indomie Rendang
+        type: string
+      version:
+        example: 0
+        type: integer
+    required:
+    - price
+    - productId
+    - productName
+    type: object
+  product.BodyRemoveProduct:
+    properties:
+      productId:
+        example: 10
+        type: integer
+    required:
+    - productId
+    type: object
+  product.OutAddProduct:
+    properties:
+      price:
+        example: 5000
+        type: number
+      productCode:
+        example: P001
+        type: string
+      productId:
+        example: 10
+        type: integer
+      productName:
+        example: Indomie Rendang
+        type: string
+      version:
+        type: integer
+    type: object
+  product.OutEditProduct:
+    properties:
+      price:
+        example: 5000
+        type: number
+      productCode:
+        example: P001
+        type: string
+      productId:
+        example: 10
+        type: integer
+      productName:
+        example: Indomie Rendang
+        type: string
+      version:
+        type: integer
+    type: object
+  product.OutGetProductList:
+    properties:
+      productList:
+        items:
+          $ref: '#/definitions/tables.Product'
+        type: array
+    type: object
+  product.OutRemoveProduct:
+    properties:
+      price:
+        example: 5000
+        type: number
+      productCode:
+        example: P001
+        type: string
+      productId:
+        example: 10
+        type: integer
+      productName:
+        example: Indomie Rendang
+        type: string
+      version:
+        type: integer
+    type: object
+  tables.Product:
+    properties:
+      price:
+        example: 3000
+        type: number
+      productCode:
+        example: P001
+        type: string
+      productId:
+        example: 10
+        type: integer
+      productName:
+        example: Indomie Goreng
+        type: string
+      version:
+        example: 0
+        type: integer
+    type: object
+host: https://myapp.id
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: APi documentation learn go
+  license:
+    name: Apache 2.0
+  termsOfService: http://swagger.io/terms/
+  title: LEARN GO API
+  version: "1.0"
+paths:
+  /api/v1/learngo/penjualan/get-list/:limit/:offset:
+    get:
+      consumes:
+      - '*/*'
+      description: Tidak ada
+      parameters:
+      - description: 'contoh: 10'
+        in: path
+        name: limit
+        type: integer
+      - description: 'contoh: 05'
+        in: path
+        name: offset
+        type: integer
+      - example: "20230115"
+        in: query
+        name: dateFrom
+        type: string
+      - example: "20230120"
+        in: query
+        name: dateTo
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sample response
+          schema:
+            $ref: '#/definitions/penjualan.OutGetPenjualanList'
+        "500":
+          description: errorCode = unexpected.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+      summary: Mendapatkan daftar penjualan
+      tags:
+      - Learngo / Penjualan
+  /v1/learngo/penjualan/add:
+    post:
+      consumes:
+      - application/json
+      description: Tidak ada
+      parameters:
+      - description: Sample JSON format
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/penjualan.BodyAddPenjualan'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/penjualan.OutAddPenjualan'
+        "500":
+          description: errorCode = unexpected.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+      summary: Menambahkan data penjualan baru
+      tags:
+      - Learngo / Penjualan
+  /v1/learngo/product/add:
+    post:
+      consumes:
+      - application/json
+      description: Tidak ada
+      parameters:
+      - description: Sample JSON format
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/product.BodyAddProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OutAddProduct'
+        "500":
+          description: errorCode = unexpected.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+      summary: Menambahkan data produk baru
+      tags:
+      - Learngo / Product
+  /v1/learngo/product/edit:
+    post:
+      consumes:
+      - application/json
+      description: Tidak ada
+      parameters:
+      - description: Sample JSON format
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/product.BodyEditProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/product.OutEditProduct'
+        "400":
+          description: 'errorCode = session.not.exists, errorArgs: [<your username>]'
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+        "404":
+          description: errorCode = network.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+        "500":
+          description: errorCode = unexpected.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+      summary: Mengedit nama dan harga produk
+      tags:
+      - Learngo / Product
+  /v1/learngo/product/get-list/:limit/:offset:
+    get:
+      consumes:
+      - '*/*'
+      description: Tidak ada
+      parameters:
+      - description: 'contoh: 10'
+        in: path
+        name: limit
+        type: integer
+      - description: 'contoh: 05'
+        in: path
+        name: offset
+        type: integer
+      - description: 'contoh: hai'
+        in: query
+        name: keyword
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sample response
+          schema:
+            $ref: '#/definitions/product.OutGetProductList'
+        "500":
+          description: errorCode = unexpected.error
+          schema:
+            $ref: '#/definitions/glapi.ResultFail'
+      summary: Mendapatkan list produk
+      tags:
+      - Learngo / Product
+  /v1/learngo/product/remove:
+    delete:
+      consumes:
+      - '*/*'
+      description: Id produk harus terdaftar
+      parameters:
+      - description: Sample JSON format
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/product.BodyRemoveProduct'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Sample response
+          schema:
+            $ref: '#/definitions/product.OutRemoveProduct'
+        "500":
+          description: 'Unexpected Error. errorCode = unexpected.error, errorArgs:
+            [message1,message2,...]'
+          schema:
+            $ref: '#/definitions/glapi.ResultFail500'
+      summary: Menghapus produk berdasarkan id
+      tags:
+      - Learngo / Product
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

@@ -5,19 +5,35 @@ go 1.18
 //git.solusiteknologi.co.id/goleaf/glauth v0.0.0-20220805013851-e6e8037f28f5
 require git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20230425073320-065c4199b183
 
+require github.com/swaggo/swag v1.16.1
+
 require (
+	github.com/KyleBanks/depth v1.2.1 // indirect
+	github.com/PuerkitoBio/purell v1.1.1 // indirect
+	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
 	github.com/georgysavva/scany v1.1.0 // indirect
+	github.com/go-openapi/jsonpointer v0.19.5 // indirect
+	github.com/go-openapi/jsonreference v0.19.6 // indirect
+	github.com/go-openapi/spec v0.20.4 // indirect
+	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.0 // indirect
+	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
+	github.com/mailru/easyjson v0.7.6 // indirect
 	github.com/mattn/go-nulltype v0.0.0-20200221160555-75ae8a76f2e9 // indirect
 	github.com/mcuadros/go-defaults v1.2.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	github.com/swaggo/files v0.0.0-20210815190702-a29dd2bc99b2 // indirect
+	golang.org/x/net v0.8.0 // indirect
+	golang.org/x/tools v0.7.0 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
 require (
 	github.com/andybalholm/brotli v1.0.4 // indirect
+	github.com/arsmn/fiber-swagger/v2 v2.31.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gofiber/fiber/v2 v2.36.0
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
@@ -37,8 +53,8 @@ require (
 	github.com/valyala/fasthttp v1.38.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa // indirect
-	golang.org/x/sys v0.0.0-20220808155132-1c4a2a72c664 // indirect
-	golang.org/x/text v0.3.7 // indirect
+	golang.org/x/sys v0.6.0 // indirect
+	golang.org/x/text v0.8.0 // indirect
 )
 
 //replace git.solusiteknologi.co.id/goleaf/goleafcore => ../goleafcore

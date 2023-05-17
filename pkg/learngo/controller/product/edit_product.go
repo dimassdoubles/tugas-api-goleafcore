@@ -27,6 +27,16 @@ type OutEditProduct struct {
 	Version     int64           `json:"version" exapmle:"0"`
 }
 
+// EditProduct godoc
+// @Router      /v1/learngo/product/edit [post]
+// @Summary     Mengedit nama dan harga produk
+// @Description Tidak ada
+// @Tags        Learngo / Product
+// @Accept      json
+// @Produce     json
+// @Param       body body BodyEditProduct true "Sample JSON format"
+// @Success     200      {object} OutEditProduct "OK"
+// @Failure     500      {object} glapi.ResultFail "errorCode = unexpected.error"
 func EditProduct(fc *fiber.Ctx) error {
 	// validasi
 	// - productId harus valid

@@ -32,7 +32,7 @@ func TestPenjualan(t *testing.T) {
 		log.Println("Output get list: ", out.PrettyString())
 
 		// ADD
-		itemList := []*penjualan.ItemPenjualan{
+		itemList := []penjualan.ItemPenjualan{
 			{
 				ProductId: 1,
 				Qty:       decimal.NewFromInt(5),

@@ -25,6 +25,16 @@ type OutAddProduct struct {
 	Version     int64           `json:"version" exapmle:"0"`
 }
 
+// AddProduct godoc
+// @Router      /v1/learngo/product/add [post]
+// @Summary     Menambahkan data produk baru
+// @Description Tidak ada
+// @Tags        Learngo / Product
+// @Accept      json
+// @Produce     json
+// @Param       body body BodyAddProduct true "Sample JSON format"
+// @Success     200      {object} OutAddProduct "OK"
+// @Failure     500      {object} glapi.ResultFail "errorCode = unexpected.error"
 func AddProduct(fc *fiber.Ctx) error {
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		body := BodyAddProduct{}

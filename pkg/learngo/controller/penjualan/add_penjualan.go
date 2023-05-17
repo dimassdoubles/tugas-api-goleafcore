@@ -18,7 +18,7 @@ import (
 type BodyAddPenjualan struct {
 	TotalPembayaran decimal.Decimal  `json:"totalPembayaran"  example:"20000"`
 	TotalKembalian  decimal.Decimal  `json:"totalKembalian" example:"30000"`
-	ItemList        []*ItemPenjualan `json:"itemList" example:"[{\"productId\": 10, \"qty\": \"5\", \"price\": \"10000\"}, {\"productId\": 20, \"qty\": \"3\", \"price\": \"15000\"}]"`
+	ItemList        []ItemPenjualan `json:"itemList"`
 }
 
 type ItemPenjualan struct {
@@ -35,6 +35,16 @@ type OutAddPenjualan struct {
 	Version         int64           `json:"version" exapmle:"0"`
 }
 
+// AddPenjualan godoc
+// @Router      /v1/learngo/penjualan/add [post]
+// @Summary     Menambahkan data penjualan baru
+// @Description Tidak ada
+// @Tags        Learngo / Penjualan
+// @Accept      json
+// @Produce     json
+// @Param       body body BodyAddPenjualan true "Sample JSON format"
+// @Success     200      {object} OutAddPenjualan "OK"
+// @Failure     500      {object} glapi.ResultFail "errorCode = unexpected.error"
 func AddPenjualan(fc *fiber.Ctx) error {
 	// validasi
 	// - productId harus valid
