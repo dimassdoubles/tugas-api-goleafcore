@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	"errors"
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/tables"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
@@ -14,7 +15,7 @@ import (
 type BodyAddProduct struct {
 	ProductCode string          `json:"productCode" validate:"required" example:"P001"`
 	ProductName string          `json:"productName" validate:"required" example:"Indomie Rendang"`
-	Price       decimal.Decimal `json:"price" valdate:"required" example:"5000"`
+	Price       decimal.Decimal `json:"price" validate:"required" example:"5000"`
 }
 
 type OutAddProduct struct {
@@ -41,6 +42,10 @@ func AddProduct(fc *fiber.Ctx) error {
 		err := glapi.FetchValidBody(fc, &body)
 		if err != nil {
 			return err
+		}
+
+		if body.Price.LessThanOrEqual(decimal.NewFromInt(0)) {
+			return errors.New("'price' is required")
 		}
 
 		out := OutAddProduct{}
