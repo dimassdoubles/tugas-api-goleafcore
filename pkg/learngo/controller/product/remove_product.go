@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	"errors"
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/tables"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
@@ -24,6 +25,9 @@ type OutRemoveProduct struct {
 }
 
 func RemoveProduct(fc *fiber.Ctx) error {
+	// validasi
+	// - productId harus valid
+
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		body := BodyRemoveProduct{}
 		err := glapi.FetchValidBody(fc, &body)
@@ -32,6 +36,22 @@ func RemoveProduct(fc *fiber.Ctx) error {
 		}
 
 		out := OutRemoveProduct{}
+
+		// productId harus valid
+		var products []*tables.Product
+		err = gldb.SelectQMt(mt, *gldb.NewQBuilder().
+			Add(" SELECT * FROM ", tables.PRODUCT, " ").
+			Add(" WHERE product_id = :productId").
+			SetParam("productId", body.ProductId),
+			&products,
+		)
+		if err != nil {
+			return err
+		}
+
+		if len(products) == 0 {
+			return errors.New("Produk id tidak valid")
+		}
 
 		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
 			Add(" DELETE FROM ", tables.PRODUCT, " ").

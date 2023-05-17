@@ -2,6 +2,7 @@ package product
 
 import (
 	"context"
+	"errors"
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/tables"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
@@ -27,6 +28,10 @@ type OutEditProduct struct {
 }
 
 func EditProduct(fc *fiber.Ctx) error {
+	// validasi
+	// - productId harus valid
+	// - version harus = version data sebelum diedit
+
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		body := BodyEditProduct{}
 		err := glapi.FetchValidBody(fc, &body)
@@ -35,6 +40,27 @@ func EditProduct(fc *fiber.Ctx) error {
 		}
 
 		out := OutEditProduct{}
+
+		// productId harus valid
+		var products []*tables.Product
+		err = gldb.SelectQMt(mt, *gldb.NewQBuilder().
+			Add(" SELECT * FROM ", tables.PRODUCT, " ").
+			Add(" WHERE product_id = :productId").
+			SetParam("productId", body.ProductId),
+			&products,
+		)
+		if err != nil {
+			return err
+		}
+
+		if len(products) == 0 {
+			return errors.New("Produk id tidak valid")
+		}
+
+		// version harus = version data sebelum diedit
+		if body.Version != products[0].Version {
+			return errors.New("Versi produk tidak sesuai dengan sistem")
+		}
 
 		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
 			Add(" UPDATE ", tables.PRODUCT, " ").

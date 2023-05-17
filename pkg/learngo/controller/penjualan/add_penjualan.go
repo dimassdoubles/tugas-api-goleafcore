@@ -2,6 +2,7 @@ package penjualan
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strings"
 
@@ -22,7 +23,7 @@ type BodyAddPenjualan struct {
 
 type ItemPenjualan struct {
 	ProductId int64           `json:"productId" example:"10"`
-	Qty       decimal.Decimal `json:"qty" validate:"gt=0" example:"5"`
+	Qty       decimal.Decimal `json:"qty" example:"5"`
 	Price     decimal.Decimal `json:"price" example:"10000"`
 }
 
@@ -35,6 +36,10 @@ type OutAddPenjualan struct {
 }
 
 func AddPenjualan(fc *fiber.Ctx) error {
+	// validasi
+	// - productId harus valid
+	// - qty harus lebih dari 0
+
 	return glapi.ApiStd(fc, func(mt context.Context, audit *gldata.AuditData) interface{} {
 		body := BodyAddPenjualan{}
 		err := glapi.FetchValidBody(fc, &body)
@@ -44,10 +49,34 @@ func AddPenjualan(fc *fiber.Ctx) error {
 
 		out := OutAddPenjualan{}
 
+		productIds := ""
+
 		totalPenjualan := decimal.NewFromInt(0)
 
 		for _, penjualanItem := range body.ItemList {
+			// qty harus lebih dari 0
+			if penjualanItem.Qty.LessThanOrEqual(decimal.NewFromInt(0)) {
+				return errors.New("Minimal qty adalah 1")
+			}
+
+			// productId harus valid
+			var products []*tables.Product
+			err = gldb.SelectQMt(mt, *gldb.NewQBuilder().
+				Add(" SELECT * FROM ", tables.PRODUCT, " ").
+				Add(" WHERE product_id = :productId").
+				SetParam("productId", penjualanItem.ProductId),
+				&products,
+			)
+			if err != nil {
+				return err
+			}
+
+			if len(products) == 0 {
+				return errors.New(fmt.Sprintf("Produk id %v tidak valid", penjualanItem.ProductId))
+			}
+
 			totalPenjualan = totalPenjualan.Add(penjualanItem.Price.Mul(penjualanItem.Qty))
+			productIds = productIds + fmt.Sprintf("%v, ", penjualanItem.ProductId)
 		}
 
 		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
