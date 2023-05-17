@@ -12,12 +12,13 @@ import (
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gldb"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
 	"github.com/gofiber/fiber/v2"
+	"github.com/jackc/pgx/v4"
 	"github.com/shopspring/decimal"
 )
 
 type BodyAddPenjualan struct {
-	TotalPembayaran decimal.Decimal  `json:"totalPembayaran"  example:"20000"`
-	TotalKembalian  decimal.Decimal  `json:"totalKembalian" example:"30000"`
+	TotalPembayaran decimal.Decimal `json:"totalPembayaran"  example:"20000"`
+	TotalKembalian  decimal.Decimal `json:"totalKembalian" example:"30000"`
 	ItemList        []ItemPenjualan `json:"itemList"`
 }
 
@@ -63,62 +64,71 @@ func AddPenjualan(fc *fiber.Ctx) error {
 
 		totalPenjualan := decimal.NewFromInt(0)
 
-		for _, penjualanItem := range body.ItemList {
-			// qty harus lebih dari 0
-			if penjualanItem.Qty.LessThanOrEqual(decimal.NewFromInt(0)) {
-				return errors.New("Minimal qty adalah 1")
+		err = gldb.BeginTrxMt(mt, func(tx pgx.Tx) error {
+
+			for _, penjualanItem := range body.ItemList {
+				// qty harus lebih dari 0
+				if penjualanItem.Qty.LessThanOrEqual(decimal.NewFromInt(0)) {
+					return errors.New("Minimal qty adalah 1")
+				}
+
+				// productId harus valid
+				var products []*tables.Product
+				err = gldb.SelectQTx(tx, *gldb.NewQBuilder().
+					Add(" SELECT * FROM ", tables.PRODUCT, " ").
+					Add(" WHERE product_id = :productId").
+					SetParam("productId", penjualanItem.ProductId),
+					&products,
+				)
+				if err != nil {
+					return err
+				}
+
+				if len(products) == 0 {
+					return errors.New(fmt.Sprintf("Produk id %v tidak valid", penjualanItem.ProductId))
+				}
+
+				totalPenjualan = totalPenjualan.Add(penjualanItem.Price.Mul(penjualanItem.Qty))
+				productIds = productIds + fmt.Sprintf("%v, ", penjualanItem.ProductId)
 			}
 
-			// productId harus valid
-			var products []*tables.Product
-			err = gldb.SelectQMt(mt, *gldb.NewQBuilder().
-				Add(" SELECT * FROM ", tables.PRODUCT, " ").
-				Add(" WHERE product_id = :productId").
-				SetParam("productId", penjualanItem.ProductId),
-				&products,
-			)
+			err = gldb.SelectRowQTx(tx, *gldb.NewQBuilder().
+				Add(" INSERT INTO ", tables.PENJUALAN, " ").
+				Add(" (total_penjualan, total_pembayaran, total_kembalian, tanggal, version) ").
+				Add(" VALUES ").
+				Add(" (:totalPenjualan, :totalPembayaran, :totalKembalian, :tanggal, :version) ").
+				Add(" RETURNING penjualan_id, total_penjualan, total_pembayaran, total_kembalian, version ").
+				SetParam("totalPenjualan", totalPenjualan).
+				SetParam("totalPembayaran", body.TotalPembayaran).
+				SetParam("totalKembalian", body.TotalKembalian).
+				SetParam("tanggal", glutil.DateNow()).
+				SetParam("version", 0),
+				&out)
 			if err != nil {
 				return err
 			}
 
-			if len(products) == 0 {
-				return errors.New(fmt.Sprintf("Produk id %v tidak valid", penjualanItem.ProductId))
+			valuesInsert := ""
+			for _, penjualanItem := range body.ItemList {
+				valuesInsert = valuesInsert + fmt.Sprintf("(%v, %v, %v, %v, 0),", out.PenjualanId, penjualanItem.ProductId, penjualanItem.Qty, penjualanItem.Price)
 			}
 
-			totalPenjualan = totalPenjualan.Add(penjualanItem.Price.Mul(penjualanItem.Qty))
-			productIds = productIds + fmt.Sprintf("%v, ", penjualanItem.ProductId)
-		}
+			valuesInsert = strings.TrimRight(valuesInsert, ",") + ";"
 
-		err = gldb.SelectRowQMt(mt, *gldb.NewQBuilder().
-			Add(" INSERT INTO ", tables.PENJUALAN, " ").
-			Add(" (total_penjualan, total_pembayaran, total_kembalian, tanggal, version) ").
-			Add(" VALUES ").
-			Add(" (:totalPenjualan, :totalPembayaran, :totalKembalian, :tanggal, :version) ").
-			Add(" RETURNING penjualan_id, total_penjualan, total_pembayaran, total_kembalian, version ").
-			SetParam("totalPenjualan", totalPenjualan).
-			SetParam("totalPembayaran", body.TotalPembayaran).
-			SetParam("totalKembalian", body.TotalKembalian).
-			SetParam("tanggal", glutil.DateNow()).
-			SetParam("version", 0),
-			&out)
-		if err != nil {
-			return err
-		}
+			err = gldb.ExecQTx(tx, *gldb.NewQBuilder().
+				Add(" INSERT INTO ", tables.PENJUALAN_ITEM, " ").
+				Add(" (penjualan_id, product_id, qty, price, version) ").
+				Add(" VALUES ").
+				Add(" ", valuesInsert, " ").
+				Log("Query insert penjualan item: "),
+			)
 
-		valuesInsert := ""
-		for _, penjualanItem := range body.ItemList {
-			valuesInsert = valuesInsert + fmt.Sprintf("(%v, %v, %v, %v, 0),", out.PenjualanId, penjualanItem.ProductId, penjualanItem.Qty, penjualanItem.Price)
-		}
+			if err != nil {
+				return err
+			}
 
-		valuesInsert = strings.TrimRight(valuesInsert, ",") + ";"
-
-		err = gldb.ExecQMt(mt, *gldb.NewQBuilder().
-			Add(" INSERT INTO ", tables.PENJUALAN_ITEM, " ").
-			Add(" (penjualan_id, product_id, qty, price, version) ").
-			Add(" VALUES ").
-			Add(" ", valuesInsert, " ").
-			Log("Query insert penjualan item: "),
-		)
+			return nil
+		})
 
 		if err != nil {
 			return err
