@@ -4,6 +4,7 @@ import (
 	_ "git.solusiteknologi.co.id/goleaf/apptemplate/docs"
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/hello"
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo"
+	"git.solusiteknologi.co.id/goleaf/glauth"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glapi"
 	swagger "github.com/arsmn/fiber-swagger/v2"
 	"github.com/gofiber/fiber/v2"
@@ -12,17 +13,19 @@ import (
 func ConfigureFiber(app *fiber.App) {
 
 	// TODO jika mau menggunakan security api
-	// accessMd := glauth.MiddlewareTask
-	// glauth.Setup(app, glauth.Config{})
+	accessMd := glauth.MiddlewareTask
+	glauth.Setup(app, glauth.Config{})
 
 	hello.Setup(app, hello.Config{
 		ApiPrefix: glapi.API_PREFIX_DEFAULT,
 		// TODO jika mau menggunakan security api
-		// Middleware: accessMd,
+		Middleware: accessMd,
 	})
 
 	learngo.Setup(app, learngo.Config{
 		ApiPrefix: glapi.API_PREFIX_DEFAULT,
+		// TODO jika mau menggunakan security api
+		Middleware: accessMd,
 	})
 
 	// API docs

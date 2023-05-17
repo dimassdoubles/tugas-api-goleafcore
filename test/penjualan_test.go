@@ -7,6 +7,7 @@ import (
 
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo"
 	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/controller/penjualan"
+	"git.solusiteknologi.co.id/goleaf/apptemplate/pkg/learngo/tables"
 	"git.solusiteknologi.co.id/goleaf/goleafcore"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/gltest"
 	"git.solusiteknologi.co.id/goleaf/goleafcore/glutil"
@@ -19,6 +20,8 @@ func TestPenjualan(t *testing.T) {
 	gltest.TestApi(t, func(app *fiber.App, tx pgx.Tx) error {
 		learngo.Setup(app, learngo.Config{})
 
+		return gltest.InitTableSample(tx, 20, tables.PENJUALAN, "penjualan_id", "total_penjualan", "name")
+		
 		return nil
 
 	}, func(assert *gltest.Assert, app *fiber.App, tx pgx.Tx, i int) interface{} {

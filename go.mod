@@ -3,11 +3,15 @@ module git.solusiteknologi.co.id/goleaf/apptemplate
 go 1.18
 
 //git.solusiteknologi.co.id/goleaf/glauth v0.0.0-20220805013851-e6e8037f28f5
-require git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20230425073320-065c4199b183
-
-require github.com/swaggo/swag v1.16.1
+require git.solusiteknologi.co.id/goleaf/goleafcore v0.0.0-20230514004749-49a51d848af7
 
 require (
+	git.solusiteknologi.co.id/goleaf/glauth v0.0.0-20230515020757-0b586785f6e1
+	github.com/swaggo/swag v1.16.1
+)
+
+require (
+	git.solusiteknologi.co.id/goleaf/glcommon v0.0.0-20230127074820-c5edf8a9ded9 // indirect
 	github.com/KyleBanks/depth v1.2.1 // indirect
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
@@ -19,6 +23,7 @@ require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-playground/validator/v10 v10.11.0 // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/leodido/go-urn v1.2.1 // indirect
 	github.com/mailru/easyjson v0.7.6 // indirect
